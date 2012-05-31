@@ -3,12 +3,12 @@ require 'bundler/capistrano'
 # #Colored capistrano output
 require 'capistrano_colors'
 
-require './config/boot'
+# require './config/boot'
 load 'deploy/assets'
 
 #rvm
-require 'deploy/rvm'
-require 'deploy/sharing-files'
+load 'deploy/rvm'
+load 'deploy/sharing-files'
 
 #VCS settings
 _cset :scm, :git
