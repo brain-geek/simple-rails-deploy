@@ -8,7 +8,8 @@ namespace :unicorn do
   end
 
   def unicorn_config
-    File.join(rails_root, 'config', 'unicorn.rb')
+    gem_path = Gem::Specification.find_by_name("simple-rails-deploy").gem_dir
+    File.join(gem_path, 'lib', 'configs', 'unicorn.rb')
   end
 
   desc "Start unicorn"
@@ -18,7 +19,12 @@ namespace :unicorn do
     if File.exists? pidfile
       abort 'Unicorn is already running'
     else
-      puts "Started and running with pid: #{File.read pidfile}" if system("bundle exec unicorn_rails -c #{unicorn_config} -D")
+      system_call = "env RAILS_PATH=#{rails_root} bundle exec unicorn_rails -c #{unicorn_config} -D"
+      if system(system_call)
+        puts "Started and running with pid: #{File.read pidfile}" 
+      else
+        puts "Unicorn failed to start. System call was: '#{system_call}' "
+      end
     end
   end
 

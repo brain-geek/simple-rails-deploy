@@ -10,13 +10,24 @@ This gem is made to get everything I need for deploy in one place. Such as:
 
 Assumptions
 ========
-1. Project uses ruby 1.9.3 for deployment.
-2. Project uses unicorn as web server daemon.
-3. Project uses bundler to handle dependencies.
-4. Project is located on one server.
-3. Each project has its own user(all path assumptions are based on this).
-4. Nobody likes setting up ruby web servers.
+- Project uses ruby 1.9.3 for deployment.
+- Project uses unicorn as web server daemon.
+- Project uses bundler to handle dependencies.
+- Project is located on one server.
+- Each project has its own user(all path assumptions are based on this).
+- Nobody likes setting up ruby web servers.
+
+Limitations
+========
+- Unicorn can be less flexibly configured
 
 TODO
 ========
 - make it work
+
+License
+======
+Copyright 2012, Alexander Rozumiy
+Distributed under the MIT license.
+
+Thanks to @Slotos for help.
