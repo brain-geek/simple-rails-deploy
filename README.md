@@ -27,7 +27,6 @@ TODO
 
 License
 ======
-Copyright 2012, Alexander Rozumiy
-Distributed under the MIT license.
+Copyright 2012, Alexander Rozumiy. Distributed under the MIT license.
 
 Thanks to @Slotos for help.
