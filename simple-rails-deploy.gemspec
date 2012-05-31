@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
 
   s.extra_rdoc_files = [
     "LICENSE.txt",
-    "README.rdoc"
+    "README.md"
   ]
 
   s.files         = `git ls-files`.split("\n")
