@@ -3,30 +3,29 @@ require 'bundler/capistrano'
 # #Colored capistrano output
 require 'capistrano_colors'
 
-# require './config/boot'
-load 'deploy/assets'
+Capistrano::Configuration.instance(true).load do
+  @load_paths += [Gem::Specification.find_by_name("simple-rails-deploy").gem_dir+'/lib']
 
-#rvm
-load 'deploy/rvm'
-load 'deploy/sharing-files'
+  load 'deploy/assets'
 
-#VCS settings
-_cset :scm, :git
-_cset :deploy_via, :remote_cache
-ssh_options[:forward_agent] = true
+  #rvm
+  load 'deploy/rvm'
+  load 'deploy/sharing-files'
 
-#Server settings
-set :use_sudo, false
+  #VCS settings
+  set :scm, :git
+  set :deploy_via, :remote_cache
+  set :ssh_options, { :forward_agent => true }
 
-#Server roles
-role :web, domain
-role :app, domain
-role :db,  domain, :primary => true
+  #Server settings
+  set :use_sudo, false
 
-#Hack to make forward_agent work
-on :start do
-  `ssh-add`
+  #Hack to make forward_agent work
+  on :start do
+    `ssh-add`
+  end
+
+  # Deployment path
+  set(:deploy_to) { "/home/#{application}/app/" }
 end
 
-# Deployment path
-_cset(:deploy_to) { "/home/#{application}/app/" }
