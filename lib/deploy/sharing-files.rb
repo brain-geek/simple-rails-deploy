@@ -1,4 +1,4 @@
-set :normal_sym, %w(
+set :normal_symlinks, %w(
     config/database.yml
     tmp
 )
