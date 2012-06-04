@@ -12,4 +12,4 @@ namespace :deploy do
   end
 end
 
-after "deploy:finalize_update", "deploy:app_sym"
+after "deploy:finalize_update", "deploy:app_symlinks"
