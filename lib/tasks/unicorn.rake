@@ -1,3 +1,16 @@
+# cpu count code is from https://gist.github.com/1009994
+module System
+  extend self
+  def cpu_count
+    return Java::Java.lang.Runtime.getRuntime.availableProcessors if defined? Java::Java
+    return File.read('/proc/cpuinfo').scan(/^processor\s*:/).size if File.exist? '/proc/cpuinfo'
+    require 'win32ole'
+    WIN32OLE.connect("winmgmts://").ExecQuery("select * from Win32_ComputerSystem").NumberOfProcessors
+  rescue LoadError
+    Integer `sysctl -n hw.ncpu 2>/dev/null` rescue 1
+  end
+end
+
 namespace :unicorn do
   def rails_root
     ENV['RAILS_PATH'] || Rails.root
@@ -13,23 +26,10 @@ namespace :unicorn do
   end
 
   def workers_count
-    if Rails.env.staging?
+    if Rails.env.staging? || Rails.env.development?
       return 1
     elsif Rails.env.production?
       # workers count == cpu cores count
-      # cpu count code is from https://gist.github.com/1009994
-      module System
-        extend self
-        def cpu_count
-          return Java::Java.lang.Runtime.getRuntime.availableProcessors if defined? Java::Java
-          return File.read('/proc/cpuinfo').scan(/^processor\s*:/).size if File.exist? '/proc/cpuinfo'
-          require 'win32ole'
-          WIN32OLE.connect("winmgmts://").ExecQuery("select * from Win32_ComputerSystem").NumberOfProcessors
-        rescue LoadError
-          Integer `sysctl -n hw.ncpu 2>/dev/null` rescue 1
-        end
-      end
-
       return System.cpu_count
     else
       return 2
