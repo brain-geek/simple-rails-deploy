@@ -76,7 +76,29 @@ server {
 
 That's all for root. Everything else will be done without superuser privileges.
 
-In code folder:
+In application code folder:
+Run capify command. Replace config/deploy.rb:
+```ruby
+require 'simple-rails-deploy/common'
+
+#Use rvm with ruby 1.9.3 for deployment
+load 'deploy/rvm'
+#Use unicorn as web server
+load 'deploy/unicorn'
+#Uncomment if you want to add 'deny all' robots.txt
+#load 'deploy/robots-deny-all'
+
+#multistaging
+require "capistrano/ext/multistage"
+set :stages, %w(demo)
+set :default_stage, "demo"
+set :keep_releases, 5
+
+set :application, "<application name>"
+set :repository,  "<repo name>"
+
+```
+
 create file config/deploy/<stage-name>.rb with contents:
 ```ruby
 # Path to deploy folder is calculated based on appication name:
