@@ -6,13 +6,13 @@ err_log    = "#{rails_root}/log/unicorn_error.log"
 old_pid    = pid_file + '.oldbin'
 
 timeout 30
-worker_processes 1 # Based on load and other stuff
+worker_processes ENV['WORKERS_COUNT'].to_i || raise("Workers count not specified") # Based on load and other stuff
 listen socket_file, :backlog => 1024
 pid pid_file
 stderr_path err_log
 stdout_path log_file
 
-#preload_app true # Master loads app begfore forking
+#preload_app true # Master loads app before forking
 preload_app false
 
 GC.copy_on_write_friendly = true if GC.respond_to?(:copy_on_write_friendly=) # ree garbage collection tuning

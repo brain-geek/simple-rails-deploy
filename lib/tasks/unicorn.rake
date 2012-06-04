@@ -12,6 +12,30 @@ namespace :unicorn do
     File.join(gem_path, 'lib', 'configs', 'unicorn.rb')
   end
 
+  def workers_count
+    if Rails.env.staging?
+      return 1
+    elsif Rails.env.production?
+      # workers count == cpu cores count
+      # cpu count code is from https://gist.github.com/1009994
+      module System
+        extend self
+        def cpu_count
+          return Java::Java.lang.Runtime.getRuntime.availableProcessors if defined? Java::Java
+          return File.read('/proc/cpuinfo').scan(/^processor\s*:/).size if File.exist? '/proc/cpuinfo'
+          require 'win32ole'
+          WIN32OLE.connect("winmgmts://").ExecQuery("select * from Win32_ComputerSystem").NumberOfProcessors
+        rescue LoadError
+          Integer `sysctl -n hw.ncpu 2>/dev/null` rescue 1
+        end
+      end
+
+      return System.cpu_count
+    else
+      return 2
+    end
+  end
+
   desc "Start unicorn"
   task :start do
     # Get unicorn pid
@@ -19,7 +43,7 @@ namespace :unicorn do
     if File.exists? pidfile
       abort 'Unicorn is already running'
     else
-      system_call = "env RAILS_PATH=#{rails_root} bundle exec unicorn_rails -c #{unicorn_config} -D"
+      system_call = "env RAILS_PATH=#{rails_root} WORKERS_COUNT=#{workers_count} bundle exec unicorn_rails -c #{unicorn_config} -D"
       if system(system_call)
         puts "Started and running with pid: #{File.read pidfile}" 
       else
