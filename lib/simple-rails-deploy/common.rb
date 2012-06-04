@@ -1,6 +1,6 @@
-# Для работы bundler. При изменении гемов bundler автоматически обновит все гемы на сервере, чтобы они в точности соответствовали гемам разработчика.
+# Bundler integration - installs same gems as in development
 require 'bundler/capistrano'
-# #Colored capistrano output
+# Colored capistrano output
 require 'capistrano_colors'
 
 Capistrano::Configuration.instance(true).load do
@@ -9,15 +9,15 @@ Capistrano::Configuration.instance(true).load do
   load 'deploy/assets'
   load 'deploy/sharing-files'
 
-  #VCS settings
+  # VCS settings
   set :scm, :git
   set :deploy_via, :remote_cache
   set :ssh_options, { :forward_agent => true }
 
-  #Server settings
+  # Server settings
   set :use_sudo, false
 
-  #Hack to make forward_agent work
+  # Hack to make forward_agent work
   on :start do
     `ssh-add`
   end

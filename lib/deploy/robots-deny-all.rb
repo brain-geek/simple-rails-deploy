@@ -1,3 +1,4 @@
+# This task adds robots.txt with 'deny all' to web root
 after "deploy:finalize_update", "deploy:robots"
 
 namespace :deploy do

@@ -1,3 +1,4 @@
+#Links files from this list to 'current' folder
 set :normal_symlinks, %w(
     config/database.yml
     tmp
