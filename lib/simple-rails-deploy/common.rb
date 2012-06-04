@@ -7,9 +7,6 @@ Capistrano::Configuration.instance(true).load do
   @load_paths += [Gem::Specification.find_by_name("simple-rails-deploy").gem_dir+'/lib']
 
   load 'deploy/assets'
-
-  #rvm
-  load 'deploy/rvm'
   load 'deploy/sharing-files'
 
   #VCS settings
