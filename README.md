@@ -77,7 +77,7 @@ server {
 That's all for root. Everything else will be done without superuser privileges.
 
 In application code folder:
-Run capify command. Replace config/deploy.rb:
+Run 'capify .' command. Replace config/deploy.rb:
 ```ruby
 require 'simple-rails-deploy/common'
 
@@ -99,7 +99,7 @@ set :repository,  "<repo name>"
 
 ```
 
-create file config/deploy/<stage-name>.rb with contents:
+create file config/deploy/[stage-name].rb with contents:
 ```ruby
 # Path to deploy folder is calculated based on appication name:
 # "/home/#{application}/app/"
@@ -122,6 +122,7 @@ role :db,  domain, :primary => true
 And run:
 ```bash
 cap <stagename> deploy:setup
+cap <stagename> deploy:create_database #optional
 cap <stagename> deploy:cold
 cap <stagename> deploy:migrate
 cap <stagename> deploy
