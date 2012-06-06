@@ -8,6 +8,7 @@ Capistrano::Configuration.instance(true).load do
 
   load 'deploy/assets'
   load 'deploy/sharing-files'
+  load 'deploy/add-to-autostart'
 
   # VCS settings
   set :scm, :git
