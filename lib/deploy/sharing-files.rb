@@ -49,6 +49,6 @@ namespace :deploy do
   end
 end
 
-before 'deploy:setup', 'deploy:create_database_yml'
-before 'deploy:setup', 'deploy:create_shared_tmp_folder'
-before 'deploy:setup', 'deploy:fix_ssh_git'
+after 'deploy:setup', 'deploy:create_database_yml'
+after 'deploy:setup', 'deploy:create_shared_tmp_folder'
+after 'deploy:setup', 'deploy:fix_ssh_git'
