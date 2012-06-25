@@ -44,7 +44,7 @@ mkdir .ssh
 nano .ssh/authorized_keys
 #(paste your public ssh key in editor)
 chmod -R 700 .ssh
-chown -R seopanel:seopanel .ssh
+chown -R <project-name>:<project-name> .ssh
 
 # Workaround to add 
 
