@@ -8,7 +8,6 @@ Gem::Specification.new do |s|
   s.version = '0.0.1'
 
   s.authors = ["Alex Rozumey"]
-  s.date = "2012-02-09"
   s.description = "It simplifies rails deployment process a lot"
   s.email = "brain-geek@yandex.ua"
 
