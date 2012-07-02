@@ -121,6 +121,7 @@ role :db,  domain, :primary => true
 
 And run:
 ```bash
+cap <stagename> rvm:install_rvm
 cap <stagename> deploy:setup
 cap <stagename> deploy:create_database #optional
 cap <stagename> deploy:cold
