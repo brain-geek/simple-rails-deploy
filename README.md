@@ -69,7 +69,7 @@ server {
  
             # If you don't find the filename in the static files
             # Then request it from the unicorn server
-            proxy_pass http://unix:/home/<projectname>/app/shared/tmp/unicorn.sock:;
+            proxy_pass http://unix:/home/<projectname>/app/shared/tmp/sockets/unicorn.sock:;
         }
 }
 ```
