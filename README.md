@@ -46,8 +46,6 @@ nano .ssh/authorized_keys
 chmod -R 700 .ssh
 chown -R <project-name>:<project-name> .ssh
 
-# Workaround to add 
-
 # Database credentials
 su postgres
 createuser <project-name>
@@ -69,7 +67,7 @@ server {
  
             # If you don't find the filename in the static files
             # Then request it from the unicorn server
-            proxy_pass http://unix:/home/<projectname>/app/shared/tmp/sockets/unicorn.sock:;
+            proxy_pass http://unix:/home/<projectname>/app/shared/tmp/unicorn.sock:;
         }
 }
 ```
