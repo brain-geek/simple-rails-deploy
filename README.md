@@ -100,7 +100,9 @@ set :repository,  "<repo name>"
 create file config/deploy/[stage-name].rb with contents:
 ```ruby
 # Path to deploy folder is calculated based on appication name:
-# "/home/#{application}/app/"
+# set :deploy_to, "/home/#{application}/app/"
+# Username is the same as application name:
+# set :user, application
 
 #set rails environment here
 set :rails_env, "production"
@@ -109,7 +111,7 @@ set :rails_env, "production"
 set :branch, "master"
 
 #set server address here
-set :domain, "<username>@<server-hostname>" # Required for ssh deploy
+set :domain, "<server-hostname>" # Required for ssh deploy
 
 #Server roles
 role :web, domain
