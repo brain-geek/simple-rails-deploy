@@ -27,5 +27,8 @@ Capistrano::Configuration.instance(true).load do
   set(:deploy_to) { "/home/#{application}/app/" }
 
   set(:user) { application }
+
+  set :keep_releases, 25
+  after "deploy:update", "deploy:cleanup" 
 end
 
