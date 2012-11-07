@@ -1,0 +1,7 @@
+Description:
+    This generator creates new capistrano stage.
+
+Example:
+    rails generate stage staging my.hostname.com
+
+    This will create config/deploy/staging.rb environment configured to deploy at my.hostname.com .
