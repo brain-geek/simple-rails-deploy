@@ -8,6 +8,7 @@ Capistrano::Configuration.instance(true).load do
 
   load 'deploy/assets'
   load 'deploy/sharing-files'
+  load 'deploy/add-to-autostart'
 
   # VCS settings
   set :scm, :git
@@ -24,5 +25,10 @@ Capistrano::Configuration.instance(true).load do
 
   # Deployment path
   set(:deploy_to) { "/home/#{application}/app/" }
+
+  set(:user) { application }
+
+  set :keep_releases, 25
+  after "deploy:update", "deploy:cleanup" 
 end
 

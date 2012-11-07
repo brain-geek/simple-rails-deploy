@@ -34,8 +34,10 @@ namespace :deploy do
 
     run "mkdir -p #{shared_path}/config"
     put db_config.result, "#{shared_path}/config/database.yml"
+  end
 
-    run "psql -c'create database #{application};' postgres"
+  task :create_database do
+    run "psql -c'create database #{application};' postgres"    
   end
 
   task :create_shared_tmp_folder do
