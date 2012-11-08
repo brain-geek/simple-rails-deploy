@@ -125,6 +125,18 @@ cap <stagename> deploy:create_database
 #Set up rvm, install ruby, initial project deploy
 cap <stagename> rvm:install_rvm rvm:install_ruby deploy:setup deploy:cold deploy:migrate deploy
 ```
+Adding custom config files
+======
+
+Put them into '/home/youruser/app/shared/' folder and add to delpoy.rb:
+```ruby
+set :normal_symlinks, %w(
+    config/database.yml
+    tmp
+    config/first_custom_config.yml
+    config/second_custom_config.yml
+)
+```
 
 License
 ======
