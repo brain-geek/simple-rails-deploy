@@ -1,10 +1,9 @@
 Simple rails deploy
 ===================
 
-This gem is made to get everything I need for deploy in one place. Such as:
+This gem is made to get everything I need for deploy in one place:
 * capistrano configuration
-* unicorn configuration
-* unicorn startup rake task
+* unicorn configuration and startup rake task
 * nginx configuration
 * all stuff and magic to use this all together
 
@@ -14,8 +13,7 @@ Assumptions
 * Project uses asset pipeline for asset packing.
 * Project uses bundler to handle dependencies.
 * Project uses git.
-* Each project has its own user(all path assumptions are based on this).
-* Nobody likes setting up ruby web servers.
+* Each project has its own user.
 
 What does it provide
 =======
@@ -24,7 +22,7 @@ Small common capistrano recipes.
 
 Limitations
 ========
-- Unicorn can be less flexibly configured
+Unicorn can be less flexibly configured
 
 Step by step instruction
 ======
@@ -34,7 +32,7 @@ Server-side:
 ```bash
 # Server initial setup
 apt-get install build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion
-#Use other package if using other DB
+#Use other package if not using PostgreSQL
 apt-get install postgresql libpq-dev
 
 # Creating new ssh user
@@ -44,9 +42,7 @@ mkdir .ssh
 nano .ssh/authorized_keys
 #(paste your public ssh key in editor)
 chmod -R 700 .ssh
-chown -R seopanel:seopanel .ssh
-
-# Workaround to add 
+chown -R <project-name>:<project-name> .ssh
 
 # Database credentials
 su postgres
@@ -62,15 +58,15 @@ server {
   root   /home/<projectname>/app/current/public;
   try_files $uri/index.html $uri.html $uri @app;
 
-        location @app {
-            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-            proxy_set_header Host $http_host;
-            proxy_redirect off;
- 
-            # If you don't find the filename in the static files
-            # Then request it from the unicorn server
-      proxy_pass http://unix:/home/<projectname>/app/shared/tmp/unicorn.sock:;
-        }
+  location @app {
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header Host $http_host;
+    proxy_redirect off;
+
+    # If you don't find the filename in the static files
+    # Then request it from the unicorn server
+    proxy_pass http://unix:/home/<projectname>/app/shared/tmp/unicorn.sock:;
+  }
 }
 ```
 
@@ -85,7 +81,7 @@ require 'simple-rails-deploy/common'
 load 'deploy/rvm'
 #Use unicorn as web server
 load 'deploy/unicorn'
-#Uncomment if you want to add 'deny all' robots.txt
+#Uncomment if you want to add 'deny all' robots.txt on deploy
 #load 'deploy/robots-deny-all'
 
 #multistaging
@@ -102,7 +98,9 @@ set :repository,  "<repo name>"
 create file config/deploy/[stage-name].rb with contents:
 ```ruby
 # Path to deploy folder is calculated based on appication name:
-# "/home/#{application}/app/"
+# set :deploy_to, "/home/#{application}/app/"
+# Username is the same as application name:
+# set :user, application
 
 #set rails environment here
 set :rails_env, "production"
@@ -111,7 +109,7 @@ set :rails_env, "production"
 set :branch, "master"
 
 #set server address here
-set :domain, "<username>@<server-hostname>" # Required for ssh deploy
+set :domain, "<server-hostname>" # Required for ssh deploy
 
 #Server roles
 role :web, domain
@@ -121,11 +119,21 @@ role :db,  domain, :primary => true
 
 And run:
 ```bash
-cap <stagename> deploy:setup
-cap <stagename> deploy:create_database #optional
-cap <stagename> deploy:cold
-cap <stagename> deploy:migrate
-cap <stagename> deploy
+#Remove deploy:create_database if you do not need to setup database and/or create database.yml file
+#Set up rvm, install ruby, initial project deploy
+cap <stagename> rvm:install_rvm rvm:install_ruby deploy:create_database deploy:setup deploy:cold deploy:migrate deploy
+```
+Adding custom config files
+======
+
+Put them into '/home/youruser/app/shared/' folder and add to delpoy.rb:
+```ruby
+set :normal_symlinks, %w(
+    config/database.yml
+    tmp
+    config/first_custom_config.yml
+    config/second_custom_config.yml
+)
 ```
 
 License

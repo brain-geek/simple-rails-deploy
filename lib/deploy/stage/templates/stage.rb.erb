@@ -1,0 +1,22 @@
+# Path to deploy folder is calculated based on appication name:
+# set :deploy_to, "/home/<%= @app_name %>/app/"
+
+#set rails environment here
+set :rails_env, "production"
+
+#set git branch here
+set :branch, "master"
+
+#set server address here
+set :domain, "<%= address %>"
+
+#set port for deployment server connection
+set :port, 22
+
+# Username is the same as application name:
+set :user, "<%= @app_name %>"
+
+#Server roles
+role :web, domain
+role :app, domain
+role :db,  domain, :primary => true
