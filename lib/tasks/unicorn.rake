@@ -26,13 +26,15 @@ namespace :unicorn do
   end
 
   def workers_count
-    if Rails.env.staging? || Rails.env.development?
-      return 1
+    if ENV['WORKERS_COUNT'].to_i > 0
+      ENV['WORKERS_COUNT'].to_i
+    elsif Rails.env.development?
+      1
     elsif Rails.env.production?
       # workers count == cpu cores count
-      return System.cpu_count
+      System.cpu_count
     else
-      return 2
+      2
     end
   end
 
