@@ -121,8 +121,9 @@ And run:
 ```bash
 #Remove deploy:create_database if you do not need to setup database and/or create database.yml file
 #Set up rvm, install ruby, initial project deploy
-cap <stagename> rvm:install_rvm rvm:install_ruby deploy:create_database deploy:setup deploy:cold deploy:migrate deploy
+cap <stagename> rvm:install_rvm rvm:install_ruby deploy:create_database deploy:setup deploy:create_database_yml deploy:cold deploy:migrate deploy
 ```
+
 Adding custom config files
 ======
 
