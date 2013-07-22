@@ -5,7 +5,7 @@ $:.push File.expand_path("../lib", __FILE__)
 
 Gem::Specification.new do |s|
   s.name = "simple-rails-deploy"
-  s.version = '0.3.1'
+  s.version = '0.3.2'
 
   s.authors = ["Alex Rozumey"]
   s.description = "Simple rails deploy makes rails deployment process fun!"
